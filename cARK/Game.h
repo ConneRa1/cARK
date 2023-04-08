@@ -10,15 +10,15 @@ class Game {
 public:
 	Game();
 	~Game();
-	//��Ϸ������ں���
+
 	void Run();
 private:
-	//��Ϸ��ʼ��
-	void Initial();
-	//���뺯��
+
+	void Initial(int w, int h);
+
 	void Input();
-	//��Ϸ���߼��ж�
+
 	void Logic();
-	//��Ϸ����������
+
 	void Draw();
 };
