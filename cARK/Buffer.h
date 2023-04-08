@@ -5,5 +5,6 @@ class Buffer {
 public:
 	virtual void effect() {};
 protected:
+	bool targetType;
 	Role target;
 };
