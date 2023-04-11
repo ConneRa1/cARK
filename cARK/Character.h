@@ -1,7 +1,6 @@
 #pragma once
 #include"Role.h"
-
-class CharacterFactory {
+class CharacterFactory {		//½ÇÉ«¹¤³§
 
 };
 

@@ -1,7 +1,7 @@
 #pragma once
 #include"Role.h"
 
-class MonsterFactory {
+class MonsterFactory {		//π÷ŒÔπ§≥ß
 
 };
 

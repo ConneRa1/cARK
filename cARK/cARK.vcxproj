@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="ChronoArk.cpp" />
     <ClCompile Include="Game.cpp" />
   </ItemGroup>
@@ -159,6 +160,7 @@
     <ClInclude Include="Character.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Role.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

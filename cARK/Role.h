@@ -1,14 +1,11 @@
 #pragma once
-#include "base.h"
+#include "Object.h"
+#include "Base.h"
 #include "Buff.h"
 
-class RoleFactory {
-
-};
-
-class Role {
+class Role {		//∂‘œÛ
 public:
-	virtual string GetType();
+	virtual string getType();
 	
 protected:
 	int HP;
