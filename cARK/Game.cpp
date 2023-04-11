@@ -35,6 +35,8 @@ void Game::Draw() {
 	window.clear();//清屏
 	window.draw(backGround->getSprite());
 
+
+
 	window.display();//把显示缓冲区的内容，显示在屏幕上
 }
 
