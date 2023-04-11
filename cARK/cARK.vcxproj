@@ -149,6 +149,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Card.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ChronoArk.cpp" />
     <ClCompile Include="Game.cpp" />

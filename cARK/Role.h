@@ -3,7 +3,7 @@
 #include "Base.h"
 #include "Buff.h"
 
-class Role {		//对象
+class Role:Object {		//对象
 public:
 	virtual string getType();
 	
