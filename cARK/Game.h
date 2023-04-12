@@ -26,6 +26,9 @@ private:
 	vector<Card*> discardPile;	//弃牌堆中的卡片
 	vector<Card*> cardPile;	//牌堆中的卡片
 
+	//display测试用
+	vector<Card*> card;
+
 	bool gameOver, gameQuit;	//游戏运行阶段
 	Texture tBackGround;	//纹理
 	Object*backGround;	//背景

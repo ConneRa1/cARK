@@ -19,7 +19,10 @@ typedef enum RoleType {		//具体角色类型，比如lucy
 };
 
 typedef enum CardType {		//具体卡牌类型
-
+	button,
+	attack,
+	cure,
+	fun
 };
 
 typedef enum BuffType {		//具体buff类型

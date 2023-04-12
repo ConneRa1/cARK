@@ -4,13 +4,11 @@
 #include "Character.h"
 #include "Monster.h"
 
-class CardFactory {		//卡片工厂
-public:
 
-};
-class Card {
+
+class Card:public Object {
 public:
-	Card();
+	Card(Texture& texture, int width, int height,int x,int y);
 	~Card();
 	void triggered();
 protected:
@@ -19,33 +17,55 @@ protected:
 	Role* target;
 	bool isTriggered;
 	bool isMouseOver;
-
+	Texture tcard;	//纹理
 	
 };
 
-class AttackCard{		//攻击类型卡片，指向敌方
+class AttackCard:public Card{		//攻击类型卡片，指向敌方
 public:
 
-	AttackCard();
+	AttackCard(Texture& texture, int width, int height,int x,int y);
 	~AttackCard();
 	
 protected:
 	
 };
 
-class CureCard{		//治疗类型卡片，指向角色
+class CureCard:public Card{		//治疗类型卡片，指向角色
 public:
-	CureCard();
+
+	CureCard(Texture& texture, int width, int height,int x,int y);
 	~CureCard();
 
 protected:
 
 };
 
-class FunctionCard {	//直接执行的卡片
+class FunctionCard:public Card {	//直接执行的卡片
 public:
-	FunctionCard();
+	FunctionCard(Texture& texture, int width, int height,int x,int y);
 	~FunctionCard();
 protected:
 
+};
+
+class CardFactory {		//卡片工厂
+public:
+	static Card *getCard(CardType num,Texture& texture, int width, int height, int x, int y)
+	{
+		switch (num)
+		{
+		case button:
+			return  new Card(texture,width,height,x,y);
+		case attack:
+			return new  AttackCard(texture, width, height, x, y);
+		case cure:
+			return new CureCard(texture, width, height, x, y);
+		case fun:
+			return new FunctionCard(texture, width, height, x, y);
+		default:
+			break;
+		}
+
+	}
 };
