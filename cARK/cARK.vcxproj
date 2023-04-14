@@ -150,9 +150,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Card.cpp" />
+    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Monster.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ChronoArk.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Role.cpp" />
+    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Base.h" />

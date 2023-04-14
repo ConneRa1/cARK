@@ -11,3 +11,13 @@ public:
 protected:
 
 };
+
+class MonsterVector {		//·â×°µÄmonsterÈÝÆ÷
+public:
+	MonsterVector() {};
+	~MonsterVector() {};
+	void draw(RenderWindow& window);
+	void push_back(Monster* newMonster);
+private:
+	vector<Monster*> monster;
+};

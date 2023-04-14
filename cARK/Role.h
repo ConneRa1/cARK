@@ -3,11 +3,16 @@
 #include "Base.h"
 #include "Buff.h"
 
-class Role:Object {		//对象
+class Role:public Object {		//对象
 public:
-	virtual string getType();
+	Role(Texture& texture, int width, int height, int x, int y,int tHP=0,int tatk=0,int tdefense=0);
+	~Role();
+	virtual string getType() {
+		return "";
+	};
 	
 protected:
+
 	int HP;
 	int atk;
 	int defense;

@@ -9,7 +9,6 @@ public:
 class Buff{
 public:
 	Buff();
-	~Buff();
 	virtual string getType() {};
 	virtual void effect() {};
 protected:
