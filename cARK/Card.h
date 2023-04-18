@@ -3,7 +3,7 @@
 #include "Object.h"
 #include "Character.h"
 #include "Monster.h"
-
+using namespace std;
 
 
 class Card:public Object {
@@ -36,6 +36,7 @@ public:
 	void push_back(Card* newCard);	//放回手中卡牌
 	void setHeldCardsPosition();	//设置手中卡片的位置
 	void drawCard();	//从牌堆中抽一张牌到持有卡牌中
+	void changeCard(Card* card);
 	void useCard(Card* card);		//使用卡片，弃牌到弃牌堆中
 	Card* cardMouse(int x, int y);  //返回对应位置的卡片的指针
 	//刷牌

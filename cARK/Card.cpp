@@ -83,6 +83,22 @@ void CardVector::drawCard() {
 	heldCards.push_back(*(cardPile.end() - 1));
 	cardPile.pop_back();
 }
+void CardVector::changeCard(Card*card) {
+	int index = 0;
+	for (auto it = heldCards.begin(); it != heldCards.end(); it++) {
+		if (*it == card)
+		{
+			heldCards.erase(it);
+			break;
+		}
+		index++;
+	}
+	cout << "ÊÖÅÆid:" << index <<"±»»»" << endl;
+	heldCards.insert(heldCards.begin()+ index, *(cardPile.end() - 1));
+	cardPile.pop_back();
+	cardPile.insert(cardPile.begin(), card);
+}
+
 
 Card* CardVector::cardMouse(int x, int y) {
 	for (auto it = heldCards.begin(); it != heldCards.end(); it++) {

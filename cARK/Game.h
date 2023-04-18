@@ -11,7 +11,7 @@
 #include "Monster.h"
 #include "Role.h"
 #include "UI.h"
-
+using namespace std;
 
 
 
@@ -28,11 +28,13 @@ private:
 	Texture tCardAbility;	//卡片纹理
 	Texture tCardData;		//卡片资料纹理
 	Texture tMonsterArmor;	//怪物纹理
+	Texture tover, twait, tchange;	//button纹理
 	Character* Hein, * Priest;	//人物
 
 	MonsterVector  monsterVector;	//怪物容器，用于存储场上所有的怪物
 	CardVector cardVector;
 	UIvector uiVector;	//ui容器
+	Buttonvector buttonVector;
 	CharacterVector characterVector;	//角色容器，用于存储场上所有的角色
 	//display测试用
 	vector<Card*> card;
@@ -47,6 +49,7 @@ private:
 	Card* cardTriggered;	//点击卡片的指针
 	
 	Card* cardMouseOver;	//显示信息的卡片
+	bool ischanging;//换牌
 	
 	
 	//Object*backGround;	//背景

@@ -1,4 +1,4 @@
-#include"Base.h"
+
 #include "Object.h"
 
 class UI:public Object {
@@ -22,8 +22,24 @@ public:
 	~UIvector() {};
 	void draw(RenderWindow& window);
 	void push_back(UI* newUI);
+	UI* uiMouse(int x, int y);
 private:
 	vector<UI*> ui;
+	
+};
+
+
+class Buttonvector {		//·â×°µÄuiÈÝÆ÷
+public:
+	Buttonvector() {};
+	~Buttonvector() {};
+	void draw(RenderWindow& window);
+	void push_back(Button* newUI);
+	Button* ButtonMouse(int x, int y);
+	int getID(Button* btn);
+private:
+	vector<Button*> buttons;
+
 };
 
 //

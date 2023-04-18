@@ -41,11 +41,17 @@ void Game::Initial() {
 	characterVector.push_back(Hein);
 	characterVector.push_back(Priest);
 
+	tover.loadFromFile("source//texture//turnover.png");
+	buttonVector.push_back(new Button(tover, WindowWidth / 12, WindowHeight / 24, 0, 85));
+	buttonVector.push_back(new Button(tover, WindowWidth / 12, WindowHeight / 24, WindowWidth / 12, 85));
+	tchange.loadFromFile("source//texture//exchange.png");
+	buttonVector.push_back(new Button(tchange, WindowWidth / 12, WindowHeight / 24, WindowWidth / 6, 85));
+
 	//卡片加载,先加载到牌堆cardPile，然后回合初抽到持有卡牌helCards中	//之后有固定抽牌时间
 
 	tCardAbility.loadFromFile("source//texture//ability.png");
 	tCardData.loadFromFile("source//texture//CutScene_remembered_leryn_3.png");
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 10; i++) {
 		cardVector.push_back(new AttackCard(tCardAbility, tCardData,Hein,1,1 ));
 	}
 
@@ -62,37 +68,6 @@ void Game::Initial() {
 
 
 	/*Hein=new()*/
-
-	/*Texture tex;
-	CardType ct;
-	int w=50, h=30, x=10, y=10;
-	tex.loadFromFile("source//texture//turnover.png");
-	ct =attack;
-	card.push_back(CardFactory::getCard(ct,tex,w,h,x,y));
-
-	tex.loadFromFile("source//texture//exchange.png");
-	x = 60; y = 10;
-	card.push_back(CardFactory::getCard(ct,tex,w,h,x,y));
-
-	tex.loadFromFile("source//texture//mp.png");
-	x = 50; y = 50; w = 30;
-	card.push_back(CardFactory::getCard(ct,tex,w,h,x,y));
-
-	tex.loadFromFile("source//texture//ability_icon.png");
-	x = 10; y = 50;
-	card.push_back(CardFactory::getCard(ct,tex,w,h,x,y));
-
-	tex.loadFromFile("source//texture//ability.png");
-	x = 50; y = 80; w = 100; h = 50;
-	card.push_back(CardFactory::getCard(ct,tex,w,h,x,y));
-
-	tex.loadFromFile("source//texture//ability_icon.png");
-	x = 10; y = 80; w = 30; h = 30;
-	card.push_back(CardFactory::getCard(ct, tex, w, h, x, y));
-
-	tex.loadFromFile("source//texture//ability.png");
-	x = 50; y = 100; w = 100; h = 50;
-	card.push_back(CardFactory::getCard(ct, tex, w, h, x, y));*/
 }
 
 void Game::Draw() {
@@ -104,7 +79,7 @@ void Game::Draw() {
 	monsterVector.draw(window);
 	cardVector.setHeldCardsPosition();
 	cardVector.draw(window);
-	
+	buttonVector.draw(window);
 
 
 	window.display();//把显示缓冲区的内容，显示在屏幕上
@@ -137,39 +112,6 @@ void Game::Input() {
 		if (event.type == sf::Event::MouseButtonPressed &&
 			event.mouseButton.button == sf::Mouse::Left){
 			if (isPlayerTurn) {
-				if (Card*temp=cardVector.cardMouse(event.mouseButton.x, event.mouseButton.y)) {			//鼠标点击卡片
-					if (temp != NULL && temp->getCardType() == CardType::draw &&!isTriggered ) {
-						DrawCard* d = dynamic_cast <DrawCard*>(temp);
-						d->drawCard(cardVector);
-					}
-					else if (isTriggered&& cardTriggered!=temp) {
-						cardTriggered->setTriggeredFalse();
-						cardTriggered = temp;
-						temp->setTriggeredTrue();
-					}
-					else if(!isTriggered) {
-						isTriggered = true;
-						cardTriggered = temp;
-						temp->setTriggeredTrue();
-					}
-					//cardVector.setHeldCardsPosition();
-				}
-
-				if (isTriggered ) {			//选中攻击卡片后点击怪物
-					Role*temp=NULL;
-					if(cardTriggered->getCardType() == CardType::attack)
-						 temp = monsterVector.monsterMouse(event.mouseButton.x, event.mouseButton.y);
-					else if(cardTriggered->getCardType() == CardType::cure)
-						temp = characterVector.characterMouse(event.mouseButton.x, event.mouseButton.y);
-					if (temp != NULL) {
-						cardTriggered->action(temp);
-						cardTriggered->setTriggeredFalse();
-						cardVector.useCard(cardTriggered);
-						isTriggered = false;
-						cardTriggered = NULL;
-					}
-				}
-
 				//if (isTriggered && cardTriggered->getCardType() == CardType::cure) {		//选中治疗卡片后点击玩家
 				//	Character* temp = characterVector.characterMouse(event.mouseButton.x, event.mouseButton.y);
 				//	if (temp != NULL) {
@@ -179,6 +121,79 @@ void Game::Input() {
 				//		cardTriggered = NULL;
 				//	}
 				//}
+				if (ischanging)
+				{
+					if (Card* temp = cardVector.cardMouse(event.mouseButton.x, event.mouseButton.y))
+					{
+						cardVector.changeCard(temp);
+						ischanging = false;
+					}
+					else ischanging = false;
+				}
+				else {
+					if (Card* temp = cardVector.cardMouse(event.mouseButton.x, event.mouseButton.y)) {			//鼠标点击卡片
+						if (temp != NULL && temp->getCardType() == CardType::draw && !isTriggered) {
+							DrawCard* d = dynamic_cast <DrawCard*>(temp);
+							d->drawCard(cardVector);
+						}
+						else if (isTriggered && cardTriggered != temp) {
+							cardTriggered->setTriggeredFalse();
+							cardTriggered = temp;
+							temp->setTriggeredTrue();
+						}
+						else if (!isTriggered) {
+							isTriggered = true;
+							cardTriggered = temp;
+							temp->setTriggeredTrue();
+						}
+						//cardVector.setHeldCardsPosition();
+					}
+					if (isTriggered) {			//选中攻击卡片后点击怪物
+						Role* temp = NULL;
+						if (cardTriggered->getCardType() == CardType::attack)
+							temp = monsterVector.monsterMouse(event.mouseButton.x, event.mouseButton.y);
+						else if (cardTriggered->getCardType() == CardType::cure)
+							temp = characterVector.characterMouse(event.mouseButton.x, event.mouseButton.y);
+						if (temp != NULL) {
+							cardTriggered->action(temp);
+							cardTriggered->setTriggeredFalse();
+							cardVector.useCard(cardTriggered);
+							isTriggered = false;
+							cardTriggered = NULL;
+						}
+					}
+				}
+				if (!isTriggered&&!ischanging)
+				{
+					if (Button* temp = buttonVector.ButtonMouse(event.mouseButton.x, event.mouseButton.y))
+					{
+						if (temp != NULL ) {
+						cout << buttonVector.getID(temp) << endl;
+						switch (buttonVector.getID(temp))
+						{
+						case 0:
+							isPlayerTurn = false;
+							break;
+						case 1:
+							//pass
+							break;
+						case 2:
+							//换牌
+							
+							if (!ischanging)ischanging = true;
+							cout << "换牌："<<ischanging<< endl;
+							break;
+						default:
+							break;
+						}
+					}
+					}
+					
+				}
+			}
+			else {
+				cout << "enemy turn over" << endl;
+				isPlayerTurn = true;
 			}
 		}
 		if (event.type == sf::Event::MouseButtonPressed &&
