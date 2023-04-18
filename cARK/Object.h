@@ -10,7 +10,6 @@ public:
 	void setPosition(int x, int y);//设定位置，不设置则默认为0;
 	void move(int x, int y);  //移动
 	//Sprite getSprite() const;	//返回sprite，便于显示
-
 	void draw(RenderWindow&window);		//在window中显示这个物体
 	bool isIn(int x, int y);	//判断是否在范围内
 protected:

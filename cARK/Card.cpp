@@ -1,8 +1,12 @@
 #include "Card.h"
 
 
-Card::Card(Texture& texture, Texture& cardData, int width, int height,int x,int y) : Object(texture, width, height,x,y){
-	this->cardData = new Object(texture, 100, 100, 0, 0);
+Card::Card(Texture& texture, Texture& cardData, Character* character,int cost) : Object(texture, WindowWidth / 6, WindowHeight / 12,0,0){
+	this->cardData = new Object(texture,100, 100, 0, 0);
+	this->character = character;
+	this->cost = cost;
+	isMouseOver = false;
+	isTriggered = false;
 }
 
 Card::~Card() {
@@ -39,20 +43,35 @@ Object* Card::getCardData() const {
 	return cardData;
 }
 
-AttackCard::AttackCard(Texture& texture, Texture& cardData, int width, int height,int x,int y) : Card(texture, cardData, width, height,x,y){}
+AttackCard::AttackCard(Texture& texture, Texture& cardData, Character* character, int cost,int m) : Card(texture, cardData,  character,  cost){
+	multiplyingPower = m;
+}
 
-CureCard::CureCard(Texture& texture, Texture& cardData, int width, int height,int x,int y) : Card(texture, cardData, width, height,x,y){}
+CureCard::CureCard(Texture& texture, Texture& cardData, Character* character, int cost,int m) : Card(texture, cardData, character, cost) {
+	multiplyingPower = m;
+}
 
-FunctionCard::FunctionCard(Texture& texture, Texture& cardData, int width, int height,int x,int y) : Card(texture, cardData, width, height,x,y){}
+DrawCard::DrawCard(Texture& texture, Texture& cardData, Character* character, int cost) : Card(texture, cardData, character, cost) {}
+
 CardType AttackCard::getCardType() const{
 	return CardType::attack;
 }
+
+void AttackCard::action(Monster* target) {
+	int damage = character->getAtk() * multiplyingPower;
+	target->changeHP(-damage);
+}
+
 CardType CureCard::getCardType() const {
 	return CardType::cure;
 }
 
-CardType FunctionCard::getCardType() const {
-	return CardType::fun;
+void CureCard::action(Character* target) {
+	int cure = character->getAtk() * multiplyingPower;
+	target->changeHP(cure);
+}
+CardType DrawCard::getCardType() const {
+	return CardType::draw;
 }
 
 void  CardVector::draw(RenderWindow& window) {
@@ -77,8 +96,15 @@ void CardVector::setHeldCardsPosition() {
 		else{
 			(*it)->setPosition(0, h);
 		}
-		if ((*it)->getMouseOver())
-			(*it)->getCardData()->setPosition(WindowWidth / 6, h);
+		if ((*it)->getMouseOver()) {
+			if ((*it)->getTriggered()) {
+				(*it)->getCardData()->setPosition(WindowWidth / 12+WindowWidth / 6, h);
+			}
+			else {
+				(*it)->getCardData()->setPosition( WindowWidth / 6, h);
+			}
+		}
+			
 		h += WindowHeight / 12;
 	}
 }
@@ -98,5 +124,16 @@ Card* CardVector::cardMouse(int x, int y) {
 	return NULL;
 }
 
+
+void CardVector::useCard(Card* card) {
+	for (auto it = heldCards.begin(); it != heldCards.end(); it++) {
+		if ((*it)==card) {
+			heldCards.erase(it);
+			discardPile.push_back(card);
+			return;
+		}
+	}
+	return;
+}
 
 

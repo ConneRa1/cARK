@@ -15,3 +15,27 @@ Role::~Role(){
 		delete((*it));
 	}
 }
+
+int Role::getMaxHP() const {
+	return HP;
+}
+
+int Role::getHP() const {
+	return currentHP;
+}
+
+void Role::setHP(int h) {
+	currentHP = h;
+}
+
+void Role::changeHP(int h) {
+	currentHP += h;
+}
+
+int Role::getAtk()const {
+	return currentAtk;
+}
+
+int Role::getDefence() const {
+	return currentDefense;
+}

@@ -8,7 +8,7 @@
 
 class Card:public Object {
 public:
-	Card(Texture& texture,Texture&cardData, int width, int height,int x,int y);
+	Card(Texture& texture, Texture& cardData, Character* character, int cost);
 	~Card();
 	virtual CardType getCardType() const ;
 	bool getTriggered() const;		//返回是否被选中
@@ -19,11 +19,10 @@ public:
 	void setMouseOverFalse();
 	void draw(RenderWindow& window);
 	Object* getCardData() const;
+	virtual void action(Role* target) {};
 protected:
 	int cost;
-	//Character* character;
-	//Role* target;
-
+	Character* character;	//来自于谁
 	bool isTriggered;
 	bool isMouseOver;
 	Object*cardData;			//卡片信息
@@ -31,54 +30,53 @@ protected:
 
 class AttackCard:public Card{		//攻击类型卡片，指向敌方
 public:
-
-	AttackCard(Texture& texture, Texture& cardData, int width, int height,int x,int y);
-	~AttackCard();
+	AttackCard(Texture& texture, Texture& cardData, Character* character, int cost, int m = 1);
+	~AttackCard() { Card::~Card(); };
 	CardType getCardType() const;
-	
+	void action(Monster* target);
 protected:
-	
+	int multiplyingPower;
 };
 
 class CureCard:public Card{		//治疗类型卡片，指向角色
 public:
 
-	CureCard(Texture& texture,  Texture& cardData, int width, int height,int x,int y);
-	~CureCard();
+	CureCard(Texture& texture, Texture& cardData, Character* character, int cost, int m = 1);
+	~CureCard() { Card::~Card(); };
 	CardType getCardType()const;
+	void action(Character*target);
+protected:
+	int multiplyingPower;
+};
 
+class DrawCard:public Card {	//抽卡卡片
+public:
+	DrawCard(Texture& texture, Texture& cardData, Character* character, int cost);
+	~DrawCard() { Card::~Card(); };
+	CardType getCardType()const;
 protected:
 
 };
 
-class FunctionCard:public Card {	//直接执行的卡片
-public:
-	FunctionCard(Texture& texture, Texture& cardData, int width, int height,int x,int y);
-	~FunctionCard();
-	CardType getCardType()const;
-protected:
-
-};
 
 
-
-class CardFactory {		//卡片工厂
-public:
-	static Card* getCard(CardType num, Texture& texture, Texture& cardData, int width, int height, int x, int y)
-	{
-		switch (num)
-		{
-		case attack:
-			return new  AttackCard(texture, cardData, width, height, x, y);
-		case cure:
-			return new CureCard(texture, cardData, width, height, x, y);
-		case fun:
-			return new FunctionCard(texture, cardData, width, height, x, y);
-		default:
-			break;
-		}
-	}
-};
+//class CardFactory {		//卡片工厂
+//public:
+//	static Card* getCard(CardType num, Texture& texture, Texture& cardData, Character* character, int cost)
+//	{
+//		switch (num)
+//		{
+//		case attack:
+//			return new  AttackCard(texture, cardData, character,  cost);
+//		case cure:
+//			return new CureCard(texture, cardData, character, cost);
+//		case draw:
+//			return new DrawCard(texture, cardData, character, cost);
+//		default:
+//			break;
+//		}
+//	}
+//};
 
 class CardVector {		//封装的card容器
 public:
@@ -88,7 +86,7 @@ public:
 	void push_back(Card* newCard);	//放回手中卡牌
 	void setHeldCardsPosition();	//设置手中卡片的位置
 	void drawCard();	//从牌堆中抽一张牌到持有卡牌中
-	void useCard();		//使用卡片，弃牌到弃牌堆中
+	void useCard(Card* card);		//使用卡片，弃牌到弃牌堆中
 	Card* cardMouse(int x,int y);  //返回对应位置的卡片的指针
 	//刷牌
 	//把弃牌堆中的牌全部放回排队

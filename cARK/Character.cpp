@@ -21,3 +21,12 @@ void CharacterVector::draw(RenderWindow& window) {
 void CharacterVector::push_back(Character* newCharacter) {
 	character.push_back(newCharacter);
 }
+
+Character* CharacterVector::characterMouse(int x, int y) {
+	for (auto it = character.begin(); it != character.end(); it++) {
+		if ((*it)->isIn(x, y)) {
+			return *it;
+		}
+	}
+	return NULL;
+}

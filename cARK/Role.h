@@ -7,15 +7,19 @@ class Role:public Object {		//¶ÔÏó
 public:
 	Role(Texture& texture, int width, int height, int x, int y,int tHP=0,int tatk=0,int tdefense=0);
 	~Role();
-	virtual string getType() {
-		return "";
-	};
-	
+	int getMaxHP() const;
+	int getHP() const;
+	void setHP(int h);
+	void changeHP(int h);
+	int getAtk()const;
+	int getDefence() const;
+
 protected:
 
 	int HP;
 	int atk;
 	int defense;
+
 	int currentHP;
 	int currentAtk;
 	int currentDefense;

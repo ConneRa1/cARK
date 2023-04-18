@@ -10,10 +10,12 @@ using std::string;
 #define WindowWidth 1280	//窗口宽度
 #define WindowHeight 720	//窗口高度
 
-//int cardWidth;
-//int cardHeight;
-//int cardDataWidth;
-//int cardDataHeight;
+//int _cardWidth=WindowWidth/6;
+//int _cardHeight=WindowHeight/12;
+//int _cardDataWidth=100;
+//int _cardDataHeight=100;
+//int _characterWidth=100;
+//int _characterHeight=100;
 
 
 typedef enum CharacterType {		//具体角色类型，比如lucy
@@ -22,11 +24,11 @@ typedef enum CharacterType {		//具体角色类型，比如lucy
 	Priest
 };
 
-typedef enum CardType {		//具体卡牌类型
+typedef enum CardType {		//卡牌类型
 	card,
 	attack,
 	cure,
-	fun
+	draw
 };
 
 typedef enum BuffType {		//具体buff类型

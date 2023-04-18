@@ -23,8 +23,11 @@ public:
 	void Run();
 private:
 	RenderWindow window;	//窗口
-	Texture tBackGround, tHeinFace, tPriestFace, tCardAbility;	//纹理
+	Texture tBackGround;
+	Texture tHeinFace, tPriestFace;	//人物纹理
+	Texture tCardAbility;	//卡片纹理
 	Texture tCardData;		//卡片资料纹理
+	Texture tMonsterArmor;	//怪物纹理
 	Character* Hein, * Priest;	//人物
 
 	MonsterVector  monsterVector;	//怪物容器，用于存储场上所有的怪物

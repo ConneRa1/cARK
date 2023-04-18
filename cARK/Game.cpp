@@ -35,9 +35,9 @@ void Game::Initial() {
 
 	//参数调整
 	tHeinFace.loadFromFile("source//texture//Hein_face .png");
-	Hein = new Character(CharacterType::Hein, tHeinFace, WindowWidth / 6, WindowHeight / 6 , WindowWidth / 6, WindowHeight / 6*5);
+	Hein = new Character(CharacterType::Hein, tHeinFace, WindowWidth / 6, WindowHeight / 6 , WindowWidth / 6, WindowHeight / 6*5,30,5);
 	tPriestFace.loadFromFile("source//texture//Trisha_face .png");
-	Priest = new Character(CharacterType::Priest, tPriestFace, WindowWidth / 6 , WindowHeight / 6 , WindowWidth / 6*2, WindowHeight / 6*5);
+	Priest = new Character(CharacterType::Priest, tPriestFace, WindowWidth / 6 , WindowHeight / 6 , WindowWidth / 6*2, WindowHeight / 6*5,30,0);
 	characterVector.push_back(Hein);
 	characterVector.push_back(Priest);
 
@@ -46,14 +46,17 @@ void Game::Initial() {
 	tCardAbility.loadFromFile("source//texture//ability.png");
 	tCardData.loadFromFile("source//texture//CutScene_remembered_leryn_3.png");
 	for (int i = 0; i < 5; i++) {
-		cardVector.push_back(CardFactory::getCard(attack, tCardAbility,tCardData, WindowWidth / 6, WindowHeight / 12, 0, 0));
+		cardVector.push_back(new AttackCard(tCardAbility, tCardData,Hein,1,1 ));
 	}
 
 	for (int i = 0; i < 5; i++) {
 		cardVector.drawCard();
 	}
+
 	cardVector.setHeldCardsPosition();
 
+	tMonsterArmor.loadFromFile("source//texture//W_Armor.png");
+	monsterVector.push_back(new Monster(tMonsterArmor, WindowWidth / 4, WindowWidth / 3, WindowWidth / 5*2, WindowHeight / 6));
 
 
 
@@ -96,16 +99,18 @@ void Game::Draw() {
 	
 	/*backGround->draw(window);*/
 	uiVector.draw(window);
+	characterVector.draw(window);
+	monsterVector.draw(window);
 	cardVector.setHeldCardsPosition();
 	cardVector.draw(window);
-	characterVector.draw(window);
+	
+
 
 	window.display();//把显示缓冲区的内容，显示在屏幕上
 
 }
 
 void Game::Input() {
-
 	sf::Event event;
 	while (window.pollEvent(event))
 	{
@@ -126,11 +131,7 @@ void Game::Input() {
 				cardMouseOver->setMouseOverFalse();
 			if(temp != NULL)
 				temp->setMouseOverTrue();
-			/*else if(temp != NULL && temp == cardMouseOver)
-			if (temp != cardMouseOver)
-				cardMouseOver->setMouseOverFalse();*/
 			cardMouseOver = temp;
-			//cardVector.setHeldCardsPosition();
 		}
 		if (event.type == sf::Event::MouseButtonPressed &&
 			event.mouseButton.button == sf::Mouse::Left){
@@ -148,6 +149,30 @@ void Game::Input() {
 					}
 					//cardVector.setHeldCardsPosition();
 				}
+
+				if (isTriggered ) {			//选中攻击卡片后点击怪物
+					Role*temp=NULL;
+					if(cardTriggered->getCardType() == CardType::attack)
+						 temp = monsterVector.monsterMouse(event.mouseButton.x, event.mouseButton.y);
+					else if(cardTriggered->getCardType() == CardType::cure)
+						temp = characterVector.characterMouse(event.mouseButton.x, event.mouseButton.y);
+					if (temp != NULL) {
+						cardTriggered->action(temp);
+						cardTriggered->setTriggeredFalse();
+						cardVector.useCard(cardTriggered);
+						isTriggered = false;
+						cardTriggered = NULL;
+					}
+				}
+				//if (isTriggered && cardTriggered->getCardType() == CardType::cure) {		//选中治疗卡片后点击玩家
+				//	Character* temp = characterVector.characterMouse(event.mouseButton.x, event.mouseButton.y);
+				//	if (temp != NULL) {
+				//		cardTriggered->action(temp);
+				//		cardTriggered->setTriggeredFalse();
+				//		isTriggered = false;
+				//		cardTriggered = NULL;
+				//	}
+				//}
 			}
 		}
 		if (event.type == sf::Event::MouseButtonPressed &&

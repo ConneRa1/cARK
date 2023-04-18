@@ -14,6 +14,7 @@ void UIvector::draw(RenderWindow& window){
 		(*it)->draw(window);
 	}
 }
+
 void UIvector::push_back(UI* newUI) {
 	ui.push_back(newUI);
 }
