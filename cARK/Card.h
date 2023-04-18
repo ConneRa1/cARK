@@ -28,6 +28,24 @@ protected:
 	Object*cardData;			//卡片信息
 };
 
+class CardVector {		//封装的card容器
+public:
+	CardVector() {};
+	~CardVector() {};
+	void draw(RenderWindow& window); //画出手中卡牌
+	void push_back(Card* newCard);	//放回手中卡牌
+	void setHeldCardsPosition();	//设置手中卡片的位置
+	void drawCard();	//从牌堆中抽一张牌到持有卡牌中
+	void useCard(Card* card);		//使用卡片，弃牌到弃牌堆中
+	Card* cardMouse(int x, int y);  //返回对应位置的卡片的指针
+	//刷牌
+	//把弃牌堆中的牌全部放回排队
+private:
+	vector<Card*> heldCards;	//持有的卡片
+	vector<Card*> discardPile;	//弃牌堆中的卡片
+	vector<Card*> cardPile;	//牌堆中的卡片
+};
+
 class AttackCard:public Card{		//攻击类型卡片，指向敌方
 public:
 	AttackCard(Texture& texture, Texture& cardData, Character* character, int cost, int m = 1);
@@ -54,6 +72,7 @@ public:
 	DrawCard(Texture& texture, Texture& cardData, Character* character, int cost);
 	~DrawCard() { Card::~Card(); };
 	CardType getCardType()const;
+	void drawCard(CardVector&cardVector);		//抽牌
 protected:
 
 };
@@ -78,20 +97,3 @@ protected:
 //	}
 //};
 
-class CardVector {		//封装的card容器
-public:
-	CardVector() {};
-	~CardVector() {};
-	void draw(RenderWindow& window); //画出手中卡牌
-	void push_back(Card* newCard);	//放回手中卡牌
-	void setHeldCardsPosition();	//设置手中卡片的位置
-	void drawCard();	//从牌堆中抽一张牌到持有卡牌中
-	void useCard(Card* card);		//使用卡片，弃牌到弃牌堆中
-	Card* cardMouse(int x,int y);  //返回对应位置的卡片的指针
-	//刷牌
-	//把弃牌堆中的牌全部放回排队
-private:
-	vector<Card*> heldCards;	//持有的卡片
-	vector<Card*> discardPile;	//弃牌堆中的卡片
-	vector<Card*> cardPile;	//牌堆中的卡片
-};

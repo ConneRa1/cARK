@@ -137,7 +137,11 @@ void Game::Input() {
 			event.mouseButton.button == sf::Mouse::Left){
 			if (isPlayerTurn) {
 				if (Card*temp=cardVector.cardMouse(event.mouseButton.x, event.mouseButton.y)) {			//鼠标点击卡片
-					if (isTriggered&& cardTriggered!=temp) {
+					if (temp != NULL && temp->getCardType() == CardType::draw &&!isTriggered ) {
+						DrawCard* d = dynamic_cast <DrawCard*>(temp);
+						d->drawCard(cardVector);
+					}
+					else if (isTriggered&& cardTriggered!=temp) {
 						cardTriggered->setTriggeredFalse();
 						cardTriggered = temp;
 						temp->setTriggeredTrue();
@@ -164,6 +168,7 @@ void Game::Input() {
 						cardTriggered = NULL;
 					}
 				}
+
 				//if (isTriggered && cardTriggered->getCardType() == CardType::cure) {		//选中治疗卡片后点击玩家
 				//	Character* temp = characterVector.characterMouse(event.mouseButton.x, event.mouseButton.y);
 				//	if (temp != NULL) {
