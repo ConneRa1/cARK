@@ -50,6 +50,7 @@ void Game::Initial() {
 	}
 
 	for (int i = 0; i < 5; i++) {
+
 		cardVector.drawCard();
 	}
 
