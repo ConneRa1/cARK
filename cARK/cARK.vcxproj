@@ -149,15 +149,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Card.cpp" />
+    <ClCompile Include="Character.cpp" />
+    <ClCompile Include="Monster.cpp" />
+    <ClCompile Include="Object.cpp" />
     <ClCompile Include="ChronoArk.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Role.cpp" />
+    <ClCompile Include="UI.cpp" />
+    <ClCompile Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Buffer.h" />
+    <ClInclude Include="Base.h" />
+    <ClInclude Include="Buff.h" />
     <ClInclude Include="Card.h" />
-    <ClInclude Include="CardDate.h" />
+    <ClInclude Include="Character.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Monster.h" />
+    <ClInclude Include="Object.h" />
     <ClInclude Include="Role.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
