@@ -3,13 +3,17 @@
 #include<string>
 #include<vector>
 #include<iostream> //便于调试
-
-using namespace std;
+using std::vector;
+using std::string;
 
 #define MaxCardNum 10	//同时持有的最大卡牌数
-#define Window_width 1280	//窗口宽度
-#define Window_height 720	//窗口高度
+#define WindowWidth 1280	//窗口宽度
+#define WindowHeight 720	//窗口高度
 
+//int cardWidth;
+//int cardHeight;
+//int cardDataWidth;
+//int cardDataHeight;
 
 
 typedef enum CharacterType {		//具体角色类型，比如lucy
@@ -19,7 +23,7 @@ typedef enum CharacterType {		//具体角色类型，比如lucy
 };
 
 typedef enum CardType {		//具体卡牌类型
-	
+	card,
 	attack,
 	cure,
 	fun

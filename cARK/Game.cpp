@@ -1,7 +1,6 @@
 #include"Game.h"
-
 Game::Game() {
-	window.create(sf::VideoMode(Window_width, Window_height), L"ChronoArk");
+	window.create(sf::VideoMode(WindowWidth, WindowHeight), L"ChronoArk");
 }
 
 Game::~Game() {
@@ -27,23 +26,27 @@ void Game::Initial() {
 	turn = 1;
 	isPlayerTurn = true;
 
+	isTriggered = false;
+	cardTriggered = NULL;
+
 
 	tBackGround.loadFromFile("source//texture//bg.png");
-	uiVector.push_back(new UI(tBackGround, Window_width, Window_height, 0, 0));
+	uiVector.push_back(new UI(tBackGround, WindowWidth, WindowHeight, 0, 0));
 
 	//参数调整
 	tHeinFace.loadFromFile("source//texture//Hein_face .png");
-	Hein = new Character(CharacterType::Hein, tHeinFace, Window_width / 6, Window_height / 6 , Window_width / 6, Window_height / 6*5);
+	Hein = new Character(CharacterType::Hein, tHeinFace, WindowWidth / 6, WindowHeight / 6 , WindowWidth / 6, WindowHeight / 6*5);
 	tPriestFace.loadFromFile("source//texture//Trisha_face .png");
-	Priest = new Character(CharacterType::Priest, tPriestFace, Window_width / 6 , Window_height / 6 , Window_width / 6*2, Window_height / 6*5);
+	Priest = new Character(CharacterType::Priest, tPriestFace, WindowWidth / 6 , WindowHeight / 6 , WindowWidth / 6*2, WindowHeight / 6*5);
 	characterVector.push_back(Hein);
 	characterVector.push_back(Priest);
 
 	//卡片加载,先加载到牌堆cardPile，然后回合初抽到持有卡牌helCards中	//之后有固定抽牌时间
 
 	tCardAbility.loadFromFile("source//texture//ability.png");
+	tCardData.loadFromFile("source//texture//CutScene_remembered_leryn_3.png");
 	for (int i = 0; i < 5; i++) {
-		cardVector.push_back(CardFactory::getCard(attack, tCardAbility, Window_width / 6, Window_height / 12, 0, 0));
+		cardVector.push_back(CardFactory::getCard(attack, tCardAbility,tCardData, WindowWidth / 6, WindowHeight / 12, 0, 0));
 	}
 
 	for (int i = 0; i < 5; i++) {
@@ -93,6 +96,7 @@ void Game::Draw() {
 	
 	/*backGround->draw(window);*/
 	uiVector.draw(window);
+	cardVector.setHeldCardsPosition();
 	cardVector.draw(window);
 	characterVector.draw(window);
 
@@ -102,12 +106,59 @@ void Game::Draw() {
 
 void Game::Input() {
 
-
-	if (isPlayerTurn) {
-
-	}
-	else {
-
+	sf::Event event;
+	while (window.pollEvent(event))
+	{
+		if (event.type == sf::Event::Closed)
+		{
+			window.close();//窗口如果要关闭，需要自己去调用close()函数
+			gameQuit = true;
+		}
+		if (event.type == sf::Event::EventType::KeyReleased &&
+			event.key.code == sf::Keyboard::Escape)
+		{
+			window.close();
+			gameQuit = true;
+		}
+		if (event.type == sf::Event::MouseMoved) {
+			Card* temp = cardVector.cardMouse(event.mouseMove.x, event.mouseMove.y);	//鼠标滑过卡片，显示卡牌信息
+			if( cardMouseOver!=NULL)
+				cardMouseOver->setMouseOverFalse();
+			if(temp != NULL)
+				temp->setMouseOverTrue();
+			/*else if(temp != NULL && temp == cardMouseOver)
+			if (temp != cardMouseOver)
+				cardMouseOver->setMouseOverFalse();*/
+			cardMouseOver = temp;
+			//cardVector.setHeldCardsPosition();
+		}
+		if (event.type == sf::Event::MouseButtonPressed &&
+			event.mouseButton.button == sf::Mouse::Left){
+			if (isPlayerTurn) {
+				if (Card*temp=cardVector.cardMouse(event.mouseButton.x, event.mouseButton.y)) {			//鼠标点击卡片
+					if (isTriggered&& cardTriggered!=temp) {
+						cardTriggered->setTriggeredFalse();
+						cardTriggered = temp;
+						temp->setTriggeredTrue();
+					}
+					else if(!isTriggered) {
+						isTriggered = true;
+						cardTriggered = temp;
+						temp->setTriggeredTrue();
+					}
+					//cardVector.setHeldCardsPosition();
+				}
+			}
+		}
+		if (event.type == sf::Event::MouseButtonPressed &&
+			event.mouseButton.button == sf::Mouse::Right) {
+			if (isPlayerTurn&& isTriggered) {
+				isTriggered = false;
+				cardTriggered->setTriggeredFalse();
+				cardTriggered = NULL;
+				//cardVector.setHeldCardsPosition();
+			}
+		}
 	}
 }
 
@@ -130,3 +181,4 @@ void Game::Logic() {
 //	tempSprite.setPosition(x,y);
 //	window.draw(tempSprite);
 //}
+
