@@ -137,7 +137,7 @@ CardType DrawCard::getCardType() const {
 }
 
 
-void drawCard(CardVector&cardVector) {//抽牌  //事例，抽两张牌
+void DrawCard :: drawCard(CardVector&cardVector) {//抽牌  //事例，抽两张牌
 	for(int i=0;i<2;i++)
 		cardVector.drawCard();
 }
